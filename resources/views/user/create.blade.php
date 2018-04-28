@@ -7,43 +7,17 @@
         </div>
         <div class="box-body">
 
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+                        @include('share.validation_error')
 
-    {{ Form::open(['url'=>'todo','class'=>'form-horizontal'])}}
+    {{ Form::open(['url'=>'user','class'=>'form-horizontal'])}}
+
+    @include('user.form')
 
 
-    <div class="form-group">
-            <label class="col-sm-2 control-label">Name</label>
-            <div class="col-sm-10">
-            {{ Form::text('name',null,['placeholder'=>'Todo Title','class'=>'form-control'])}}
-            </div>
-    </div>       
-
-    <div class="form-group">
-            <label class="col-sm-2 control-label">Email</label>
-            <div class="col-sm-10">
-            {{ Form::email('name',null,['placeholder'=>'Todo Title','class'=>'form-control'])}}
-            </div>
-    </div>  
-
-    <div class="form-group">
-            <label class="col-sm-2 control-label">Password</label>
-            <div class="col-sm-10">
-            {{ Form::password('name',['placeholder'=>'Todo Title','class'=>'form-control'])}}
-            </div>
-    </div>  
     <div class="form-group">
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-10">
-                    {{ Form::submit('Save Todo',['class'=>'btn btn-success'])}}
+                    {{ Form::submit('Save User',['class'=>'btn btn-success'])}}
                     {{ link_to('/todo','Back',['class'=>'btn btn-info'])}}
 
             </div>

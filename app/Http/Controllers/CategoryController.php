@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Category;
 
 class CategoryController extends Controller
 {
     public function index(){
-        $data['categories'] = array('Category 1','Category 2','Category 3');
+        $data['categories'] = Category::all();
         return view('category.index',$data);
     }
 

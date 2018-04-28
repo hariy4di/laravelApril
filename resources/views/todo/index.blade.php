@@ -6,16 +6,29 @@
           <h3 class="box-title">Bordered Table</h3>
         </div>
         <div class="box-body">
+
+            {{ Session('message') }}
+
             <table class="table table-bordered">
                 <tr>
                     <th>Title</th>
                     <th>Description</th>
+                    <th>Created At</th>
+                    <th width="135"></th>
                 </tr>
                 @foreach($todos as $todo)
                     <tr>
-                        <td>{{ $todo }}</td>
-                        <td>sample text</td>
-                        <td>password</td>
+                        <td>{{ $todo->title }}</td>
+                        <td>{{ $todo->description }}</td>
+                        <td>{{ $todo->created_at }}</td>
+                        <td>
+                            {{ link_to('todo/'.$todo->id.'/edit','Edit',['class'=>'btn btn-info'])}}
+                            
+                            {{ Form::open(['url'=>'todo/'.$todo->id,'method'=>'delete','style'=>'float:right',
+                            'onclick'=>"return confirm('Are you sure you want to delete this item?');"])}}
+                            {{ Form::submit('delete',['class'=>'btn btn-success'])}}
+                            {{ Form::close()}}
+                        </td>
                     </tr>
                 @endforeach
             </table>

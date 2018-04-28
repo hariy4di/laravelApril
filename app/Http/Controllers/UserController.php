@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use DB;
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
@@ -13,10 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['users'] = array(
-                array('name'=>'nuris','email'=>'nuris.akbar@gmail.com','password'=>'password'),
-                array('name'=>'zaki','email'=>'zaki.akbar@gmail.com','password'=>'password')
-        );
+        $data['users'] = DB::table('users')->get();
         return view('user.index',$data);
     }
 
@@ -38,7 +36,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->name;
+        DB::table('users')->insert([
+                            'name'      =>  $request->name,
+                            'email'     =>  $request->email,
+                            'password'  =>  Hash::make($request->password)]);
+        return redirect('user');
     }
 
     /**
@@ -60,7 +62,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['user']=DB::table('users')->where('id',$id)->first();
+        return view('user.edit',$data);
     }
 
     /**
@@ -72,7 +75,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $password = $request->password;
+
+        // $data['todos'] = Todo::paginate(3);
+        // {{ $todos->links() }}
+
+        if(!empty($password)){
+            // update password
+            DB::table('users')->where('id',$id)->update([
+                                'name'      =>  $request->name,
+                                'email'     =>  $request->email,
+                                'password'  =>  Hash::make($request->password)]);
+        }else{
+            // jangan update password
+            DB::table('users')->where('id',$id)->update([
+                                'name'      =>  $request->name,
+                                'email'     =>  $request->email]);
+        }
+        return redirect('user');
     }
 
     /**
@@ -83,6 +103,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $query = DB::table('users')->where('id',$id);
+        // membaca data nya terlebih dahulu dan disimpan dalam variabel user
+        $user = $query->get();
+        // proses hapus
+        $query->delete();
+        return redirect('user')->with('status','user dengan name '.$user->name .'has deleted');
     }
 }
