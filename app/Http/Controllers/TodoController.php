@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Todo;
 
 class TodoController extends Controller
 {
     public function index(){
-        $data['todos'] = array('Pergi Sekolah','Kerjakan PR','Tidur Malam');
-        return view('todo.index',$data);
+        return Todo::all();
+        
+        // $data['todos'] = Todo::all();
+        //return view('todo.index',$data);
     }
 
     public function create(){
